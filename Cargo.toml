@@ -1,0 +1,13 @@
+[package]
+name = "tokio-cb"
+version = "0.1.0"
+authors = ["Michael Nitschinger <michael@nitschinger.at>"]
+
+[dependencies]
+couchbase = "0.1"
+futures = "0.1"
+tokio-proto = "0.1"
+tokio-service = "0.1"
+tokio-minihttp =  { git = "https://github.com/tokio-rs/tokio-minihttp.git" }
+rand = "0.3"
+rustc-serialize = "0.3"
