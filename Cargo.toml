@@ -4,7 +4,7 @@ version = "0.1.0"
 authors = ["Michael Nitschinger <michael@nitschinger.at>"]
 
 [dependencies]
-couchbase = "0.1"
+couchbase = "0.2"
 futures = "0.1"
 tokio-proto = "0.1"
 tokio-service = "0.1"

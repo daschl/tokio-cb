@@ -14,7 +14,6 @@ extern crate rand;
 extern crate rustc_serialize;
 
 use std::io;
-use std::io::{Error, ErrorKind};
 use std::sync::Arc;
 use futures::{BoxFuture, Future};
 use couchbase::{Cluster, Bucket};
@@ -33,22 +32,13 @@ impl Service for Server {
     type Future = BoxFuture<Response, io::Error>;
 
     fn call(&self, _: Request) -> Self::Future {
-        let doc = self.db
-            .get("airline_10226")
-            .map_err(|e| Error::new(ErrorKind::Other, format!("{:?}", e)));
-
-        let content = doc.map(|d| {
-            match d {
-                    Some(ref d) => d.content_as_str().unwrap(),
-                    None => "{\"not found\": true}",
-                }
-                .to_owned()
-        });
-
-        content.map(|c| {
+        self.db
+            .get("airline_10226") // Fetch the document
+            .map_err(|e| e.into()) // Turn a CouchbaseError into an io::Error
+            .map(|doc| {
                 let mut response = Response::new();
                 response.header("Content-Type", "application/json");
-                response.body(&c);
+                response.body(doc.content_as_str().unwrap()); // serve the json content directly
                 response
             })
             .boxed()
